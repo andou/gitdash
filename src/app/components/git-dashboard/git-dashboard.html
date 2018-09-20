@@ -1,0 +1,131 @@
+<div fxLayout="row" fxLayoutAlign="space-around start">
+
+    <form fxFlex="45" fxLayout="column" #gitdashboardform="ngForm" (ngSubmit)="onSubmit(gitdashboardform)" novalidate>
+        <mat-card fxLayout="column">
+            <mat-card-title>Preview</mat-card-title>
+            <div>Branch: {{ branch}}</div>
+            <div>Author: {{ authorName }} &lt;{{authorEmail}}&gt;</div>
+            <div fxFlexOffset="10px">{{ message}}</div>
+            <div fxFlexOffset="20px">
+                <button button="submit" mat-raised-button color="primary">Commit!</button>
+            </div>
+        </mat-card>
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Message
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-card fxLayout="column">
+                    <mat-card-title>Message</mat-card-title>
+                    <mat-form-field class="git-form">
+                        <input matInput [(ngModel)]="message" name="message" required
+                               placeholder="Name" type="text"/>
+                    </mat-form-field>
+                </mat-card>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Author
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-card fxLayout="column">
+                    <mat-card-title>Author</mat-card-title>
+                    <mat-form-field class="git-form">
+                        <input matInput [(ngModel)]="authorName" name="authorName" required
+                               placeholder="Name" type="text"/>
+                    </mat-form-field>
+                    <mat-form-field class="git-form">
+                        <input matInput [(ngModel)]="authorEmail" name="authorEmail" required
+                               placeholder="Email" type="text"/>
+                    </mat-form-field>
+                </mat-card>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Branch
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-card fxLayout="column">
+                    <mat-form-field fxFlexOffset="20px">
+                        <mat-select placeholder="Choose branch" [(ngModel)]="branch" name="branch">
+                            <mat-option *ngFor="let b of branches" [value]="b.name">
+                                {{b.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        New branch
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-card fxLayout="column">
+                    <mat-form-field class="git-form">
+                        <input matInput [(ngModel)]="newbranch" name="newbranch" required
+                               placeholder="Name" type="text"/>
+                    </mat-form-field>
+                    <mat-form-field fxFlexOffset="20px">
+                        <mat-select placeholder="Branching from" [(ngModel)]="startingbranch" name="startingbranch">
+                            <mat-option *ngFor="let b of branches" [value]="b.name">
+                                {{b.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div fxFlexOffset="20px">
+                        <button type="button" (click)="addBranch(newbranch,startingbranch)" mat-raised-button
+                                color="primary">
+                            Add
+                            Branch!
+                        </button>
+                    </div>
+                </mat-card>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Merge branches
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-card fxLayout="column">
+                    <mat-form-field fxFlexOffset="20px">
+                        <mat-select placeholder="Merge" [(ngModel)]="mergefrom" name="mergefrom">
+                            <mat-option *ngFor="let b of branches" [value]="b.name">
+                                {{b.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlexOffset="20px">
+                        <mat-select placeholder="Into" [(ngModel)]="mergeto" name="mergeto">
+                            <mat-option *ngFor="let b of branches" [value]="b.name">
+                                {{b.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div fxFlexOffset="20px">
+                        <button type="button" (click)="mergeBranches(mergefrom,mergeto)" mat-raised-button
+                                color="primary">
+                            Merge
+                            branches!
+                        </button>
+                    </div>
+                </mat-card>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </form>
+
+    <div fxFlex="45">
+        <canvas id="gitGraph"></canvas>
+    </div>
+
+</div>
+
+
+<!-- <div>Author: {{ authorName }} &lt;{{authorEmail}}&gt;</div>
+<div>Form value: {{ gitdashboardform.value | json }}</div> -->
