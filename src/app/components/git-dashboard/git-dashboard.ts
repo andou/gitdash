@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {branch} from "@angular-devkit/schematics/src/tree/static";
 
 declare var GitGraph: any;
+declare var Template: any;
 
 @Component({
     selector: 'git-dashboard',
@@ -68,7 +69,7 @@ export class GitDashboardComp {
         this.getBranch(this.master).commit(
             {
                 message: "First commit",
-                author: "Antonio Pastorino <antonio.pastorino@gmail.com>"
+                author: this.authorName + " <" + this.authorEmail + ">"
             }
         );
         console.log("Done! Ready!");
@@ -161,6 +162,7 @@ export class GitDashboardComp {
                 }
             };
             this.graphTemplate = new GitGraph.Template(templateConfig);
+            this.graphTemplate = 'metro';
         }
     };
 
@@ -172,6 +174,7 @@ export class GitDashboardComp {
         if (!this.graph) {
             this.graph = new GitGraph({
                 reverseArrow: false,
+                author: this.authorName + " <" + this.authorEmail + ">",
                 orientation: "vertical",
                 mode: "extended",
                 template: this.graphTemplate
@@ -229,7 +232,7 @@ export class GitDashboardComp {
      */
     addNewBranch = function (branch) {
         if (!this.hasBranch(branch)) {
-            let new_branch = this.getGraph().branch({name: branch});
+            let new_branch = this.getGraph().branch({name: branch, showLabel: true});
             this.branches.push(new_branch);
             return new_branch;
         } else {
@@ -259,7 +262,8 @@ export class GitDashboardComp {
             let new_branch = starting_branch.branch(
                 {
                     name: branchName,
-                    parentBranch: starting_branch
+                    parentBranch: starting_branch,
+                    showLabel: true
                 }
             );
             this.branches.push(new_branch);
@@ -268,6 +272,19 @@ export class GitDashboardComp {
             return this.getBranch(branchName);
         }
     };
+
+    /**
+     *
+     * @type {string}
+     */
+    mergefrom: string = "";
+
+    /**
+     *
+     * @type {string}
+     */
+    mergeto: string = "";
+
 
     mergeBranches(branchName, destination) {
         if (this.hasBranch(branchName) && this.hasBranch(destination)) {

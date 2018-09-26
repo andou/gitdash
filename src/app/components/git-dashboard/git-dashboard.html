@@ -2,7 +2,7 @@
 
     <form fxFlex="45" fxLayout="column" #gitdashboardform="ngForm" (ngSubmit)="onSubmit(gitdashboardform)" novalidate>
         <mat-card fxLayout="column">
-            <mat-card-title>Preview</mat-card-title>
+            <mat-card-title>Make a commit</mat-card-title>
             <div>Branch: {{ branch}}</div>
             <div>Author: {{ authorName }} &lt;{{authorEmail}}&gt;</div>
             <div fxFlexOffset="10px">{{ message}}</div>
@@ -65,8 +65,7 @@
                 </mat-expansion-panel-header>
                 <mat-card fxLayout="column">
                     <mat-form-field class="git-form">
-                        <input matInput [(ngModel)]="newbranch" name="newbranch" required
-                               placeholder="Name" type="text"/>
+                        <input matInput [(ngModel)]="newbranch" name="newbranch" placeholder="Name" type="text"/>
                     </mat-form-field>
                     <mat-form-field fxFlexOffset="20px">
                         <mat-select placeholder="Branching from" [(ngModel)]="startingbranch" name="startingbranch">
